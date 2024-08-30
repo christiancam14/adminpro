@@ -48,7 +48,7 @@
             class="has-arrow waves-effect waves-dark"
             href="#"
             aria-expanded="false"
-            ><i class="mdi mdi-gauge"></i
+            ><i [class]="item.icono"></i
             ><span class="hide-menu"
               >{{ item.titulo }}
               <span class="label label-rouded label-themecolor pull-right">{{
@@ -56,7 +56,7 @@
               }}</span></span
             ></a
           >
-          <ul aria-expanded="false" class="collapse">
+          <ul aria-expanded="false" class="">
             <li *ngFor="let subMenuItem of item.submenu">
               <!-- [routerLink]="subMenuItem.url" -->
               <a
