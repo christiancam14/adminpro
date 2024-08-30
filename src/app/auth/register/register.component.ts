@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
@@ -29,7 +30,8 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private router: Router
   ) {}
 
   crearUsuario() {
@@ -39,7 +41,7 @@ export class RegisterComponent {
       console.log('Posteando el formulario');
       this.usuarioService.crearUsuario(this.registerForm.value).subscribe(
         (resp) => {
-          console.log(resp);
+          this.router.navigateByUrl('/');
         },
         (err) => {
           console.log(err);
