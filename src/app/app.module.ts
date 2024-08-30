@@ -1,18 +1,39 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+// import { PagesModule } from './pages/pages.module';
+
 import { AppComponent } from './app.component';
+import { NopagefoundComponent } from './nopagefound/nopagefound.component';
+import { RouterModule } from '@angular/router';
+import { AuthModule } from './auth/auth.module';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NopagefoundComponent,
+
+    // LoginComponent,
+    // RegisterComponent,
+
+    // BreadcrumbsComponent,
+    // SidebarComponent,
+    // HeaderComponent,
+
+    // DashboradComponent,
+    // ProgressComponent,
+    // Grafica1Component,
+    // PagesComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule,
+    PagesModule,
+    AuthModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
