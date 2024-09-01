@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 import { map } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
+import { Hospital } from '../models/hospital.model';
 
 const base_url = environment.base_url;
 
@@ -48,11 +49,12 @@ export class BusquedasService {
           switch (tipo) {
             case 'usuarios':
               return this.transformarUsuarios(resp.resultados);
-              break;
-
+            case 'hospitales':
+              return resp.resultados;
+            case 'medicos':
+              return this.transformarUsuarios(resp.resultados);
             default:
-              return;
-              break;
+              return [];
           }
         })
       );

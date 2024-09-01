@@ -1,6 +1,6 @@
 <div
   class="fondo-modal-imagen animated fadeIn fast"
-  [class.oculto]="ocultarModal"
+  [class.oculto]="modalImagenService.ocultarModal"
 >
   <div
     class="modal fade show"
@@ -26,6 +26,22 @@
         </div>
         <div class="modal-body">
           <h3>Seleccione una imagen</h3>
+
+          <div class="img-container text-center">
+            <img
+              *ngIf="!imgTemp"
+              [src]="modalImagenService.img"
+              alt=""
+              class="img-avatar"
+            />
+            <img *ngIf="imgTemp" [src]="imgTemp" alt="" class="img-avatar" />
+          </div>
+
+          <input
+            type="file"
+            (change)="cambiarImagen($event)"
+            accept="image/png, image/jpeg, image/gif, image/jpg"
+          />
         </div>
         <div class="modal-footer">
           <button
@@ -36,7 +52,9 @@
           >
             Cancelar
           </button>
-          <button type="button" class="btn btn-primary">Actualizar</button>
+          <button type="button" class="btn btn-primary" (click)="subirImage()">
+            Actualizar
+          </button>
         </div>
       </div>
     </div>

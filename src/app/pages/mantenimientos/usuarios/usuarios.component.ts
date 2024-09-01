@@ -1,26 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedasService } from 'src/app/services/busquedas.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
+import { ModalImagenService } from '../../../services/modal-imagen.service';
+import { delay, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styles: [],
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
   public usuarios: Usuario[] = [];
   public usuariosTemp: Usuario[] = [];
   public totalUsuarios: number = 0;
   public desde: number = 0;
   public cargando: boolean = true;
 
+  public imgSubs: Subscription;
+
   constructor(
     private usuarioService: UsuarioService,
-    private busquedasService: BusquedasService
+    private busquedasService: BusquedasService,
+    private modalImagenService: ModalImagenService
   ) {
     this.cargarUsuarios();
+    this.imgSubs = this.modalImagenService.nuevaImagen
+      .pipe(delay(100))
+      .subscribe((img) => {
+        this.cargarUsuarios();
+      });
+  }
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
   }
 
   cargarUsuarios() {
@@ -57,9 +70,7 @@ export class UsuariosComponent implements OnInit {
 
     this.busquedasService.buscar('usuarios', termino).subscribe((resp) => {
       if (resp) {
-        this.usuarios = resp;
-        console.log(resp);
-        console.log(this.usuarios);
+        this.usuarios = resp as Usuario[];
       }
     });
 
@@ -71,8 +82,6 @@ export class UsuariosComponent implements OnInit {
     if (usuario.uid === this.usuarioService.uid) {
       return Swal.fire('Error', 'No puede borrarse a sí mismo', 'error');
     }
-
-    console.log('Esto no se tiene que ver');
 
     return Swal.fire({
       title: '¿Borrar usuario?',
@@ -101,6 +110,12 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.actualizarUsuario(usuario).subscribe((resp) => {
       console.log(resp);
     });
+  }
+
+  abrirlModal(usuario: Usuario) {
+    if (usuario.uid) {
+      this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img);
+    }
   }
 
   ngOnInit(): void {}
