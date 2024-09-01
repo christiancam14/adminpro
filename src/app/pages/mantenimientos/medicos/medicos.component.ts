@@ -6,6 +6,7 @@ import { MedicoService } from 'src/app/services/medico.service';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-medicos',
@@ -23,6 +24,7 @@ export class MedicosComponent implements OnInit, OnDestroy {
     private modalImagenService: ModalImagenService,
     private busquedasService: BusquedasService,
     private usuarioService: UsuarioService,
+    private router: Router
   ) {
     this.cargarMedicos();
     this.imgSubs = this.modalImagenService.nuevaImagen
@@ -97,5 +99,9 @@ export class MedicosComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  crearMedico() {
+    this.router.navigateByUrl('/dashboard/medico/nuevo');
   }
 }

@@ -28,8 +28,15 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Hospitales</h4>
-        <h6 class="card-subtitle">Hospitales registrados en mi aplicación</h6>
+        <div class="row">
+          <div class="col-6">
+            <h4 class="card-title">Medicos</h4>
+            <h6 class="card-subtitle">Medicos registrados en mi aplicación</h6>
+          </div>
+          <div class="col-6 text-right">
+            <button class="btn btn-primary" (click)="crearMedico()">Crear médico</button>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>
@@ -44,7 +51,7 @@
                 <td>
                   <img
                     [src]="medico.img! | imagen : 'medicos'"
-                    alt="Hospital"
+                    alt="Medico"
                     class="avatar cursor-pointer"
                     (click)="abrirlModal(medico)"
                   />
@@ -52,7 +59,7 @@
                 <td>{{ medico.nombre }}</td>
                 <td class="text-nowrap text-center">
                   <a
-                    [routerLink]="['/dashboard','medico', medico._id]"
+                    [routerLink]="['/dashboard', 'medico', medico._id]"
                     data-toggle="tooltip"
                     data-original-title="Editar"
                   >

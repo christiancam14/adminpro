@@ -56,11 +56,8 @@ export class MedicoService {
     return this.http.delete(`${base_url}/medicos/${medico._id}`, this.headers);
   }
 
-  actualizarMedico(medico: Medico) {
-    return this.http.put(
-      `${base_url}/medicos/${medico._id}`,
-      medico,
-      this.headers
-    );
+  actualizarMedico(medico: any) {
+    console.log(medico);
+    return this.http.put(`${base_url}/medicos/${medico.medico}`, medico, this.headers);
   }
 }

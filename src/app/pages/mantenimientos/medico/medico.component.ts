@@ -49,9 +49,27 @@ export class MedicoComponent implements OnInit {
   ngOnInit(): void {}
 
   cargarMedico(id: string) {
-    this.medicoService.obtenerMedicoPorId(id).subscribe((medico) => {
-      console.log(medico);
-      this.medicoSeleccionado = medico;
+    if (id === 'nuevo') {
+      // Nuevo medico
+      return;
+    }
+
+    this.medicoService.obtenerMedicoPorId(id).subscribe({
+      next: (medico) => {
+        if (!medico) {
+          return this.router.navigateByUrl(`/dashboard/medicos`);
+        }
+
+        const { nombre, hospital } = medico;
+        this.medicoForm.setValue({ nombre, hospital: hospital._id });
+        this.medicoSeleccionado = medico;
+        return;
+      },
+      error: (err) => {
+        // Manejar el error, por ejemplo, redirigir al listado de médicos
+        console.error('Error al cargar el médico:', err);
+        this.router.navigateByUrl(`/dashboard/medicos`);
+      },
     });
   }
 
@@ -65,11 +83,26 @@ export class MedicoComponent implements OnInit {
 
   guardarMedico() {
     const { nombre } = this.medicoForm.value;
-    this.medicoService
-      .crearMedico(this.medicoForm.value)
-      .subscribe((resp: any) => {
-        Swal.fire('Creado', `${nombre} creado correctamente`, 'success');
-        this.router.navigateByUrl(`/dashboard/medico/${resp.medico._id}`);
+
+    if (this.medicoSeleccionado) {
+      // Actualizar
+      const data = {
+        medico: this.medicoSeleccionado._id,
+        ...this.medicoForm.value,
+      };
+      this.medicoService.actualizarMedico(data).subscribe((resp: any) => {
+        console.log(resp);
+        Swal.fire('Actualizado', `${nombre} creado correctamente`, 'success');
       });
+    } else {
+      // Crear
+
+      this.medicoService
+        .crearMedico(this.medicoForm.value)
+        .subscribe((resp: any) => {
+          Swal.fire('Creado', `${nombre} creado correctamente`, 'success');
+          this.router.navigateByUrl(`/dashboard/medico/${resp.medico._id}`);
+        });
+    }
   }
 }
